@@ -301,4 +301,9 @@ public class VehicleManager {
         double dy = y2 - y1;
         return Math.hypot(dx, dy);
     }
+    public long getRecklessCarCount() {
+        return vehicles.stream()
+            .filter(car -> car.getDrivingStrategy() instanceof RecklessDrivingStrategy)
+            .count();
+    }
 }

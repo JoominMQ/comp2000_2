@@ -7,7 +7,7 @@ public class App {
 
     static float worldTimeElapsed = 0;
     static boolean paused = false;
-
+    static StatsWindow statsWindow;
     static LightManager trafficLights;
     static private VehicleManager vehicleManager;
     static private PedestrianManager pedestrianManager;
@@ -22,7 +22,8 @@ public class App {
         vehicleManager = new VehicleManager(trafficLights);
 
         pedestrianManager = new PedestrianManager(trafficLights, vehicleManager);
-
+        statsWindow = new StatsWindow();
+        statsWindow.setVisible(true);
         JFrame frame = new JFrame("Traffic Sim");
 
         JPanel panel = new JPanel() {
@@ -81,7 +82,11 @@ public class App {
             vehicleManager.update(deltaTime, worldTimeElapsed);
             trafficLights.update();
             pedestrianManager.update(deltaTime, worldTimeElapsed);
-
+            long reckless = vehicleManager.getRecklessCarCount();
+            statsWindow.update(
+                vehicleManager.getVehicles().size() - reckless,
+                reckless,
+                pedestrianManager.getPedestrians().size());
             panel.repaint();
         });
 
